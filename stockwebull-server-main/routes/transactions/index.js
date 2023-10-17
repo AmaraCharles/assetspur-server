@@ -1,13 +1,69 @@
 const UsersDatabase = require("../../models/User");
 var express = require("express");
 var router = express.Router();
-const { sendDepositEmail} = require("../../utils");
+const { sendDepositEmail,sendPlanEmail,sendUserPlanEmail} = require("../../utils");
 const { sendUserDepositEmail,sendWithdrawalEmail,sendWithdrawalRequestEmail} = require("../../utils");
 
 const { v4: uuidv4 } = require("uuid");
 const app=express()
 
 
+router.post("/:_id/plan", async (req, res) => {
+  const { _id } = req.params;
+  const { method, amount, from, timestamp } = req.body;
+
+  const user = await UsersDatabase.findOne({ _id });
+
+  if (!user) {
+    res.status(404).json({
+      success: false,
+      status: 404,
+      message: "User not found",
+    });
+
+    return;
+  }
+
+ 
+    // Calculate the new balance
+    const newBalance = eval(parseFloat(user.balance) - parseFloat(amount));
+
+    // Update user's document with the new balance and add the new transaction
+    await user.updateOne({
+      $set: {
+        balance: newBalance,
+      },
+      $push: {
+        transactions: newTransaction,
+      },
+    });
+
+    res.status(200).json({
+      success: true,
+      status: 200,
+      message: "Subscription was successful",
+    });
+
+    sendPlanEmail({
+      amount: amount,
+      method: method,
+      from: from,
+      timestamp: timestamp,
+    });
+
+    sendUserPlanEmail({
+      amount: amount,
+      method: method,
+      from: from,
+      url: url,
+      to: req.body.email,
+      timestamp: timestamp,
+    });
+
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 
 router.post("/:_id/deposit", async (req, res) => {

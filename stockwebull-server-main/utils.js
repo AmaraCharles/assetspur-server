@@ -80,7 +80,7 @@ const sendWithdrawalEmail = async ({  to, amount, method,timestamp,from }) => {
     <p>Time:${timestamp}</p>
  
     <p>Best wishes,</p>
-    <p>assetspur Team</p>
+    <p>ASSETSPUR Team</p>
 
     </html>
     
@@ -128,7 +128,7 @@ const sendDepositEmail = async ({  from, amount, method,timestamp }) => {
     </p>
  <p>${timestamp}</p>
     <p>Best wishes,</p>
-    <p>assetspur Team</p>
+    <p>ASSETSPUR Team</p>
 
     </html>
     
@@ -164,7 +164,7 @@ const sendWithdrawalRequestEmail = async ({ from, amount, method, address }) => 
     </p>
 
     <p>Best wishes,</p>
-    <p>assetspur Team</p>
+    <p>ASSETSPUR Team</p>
 
     </html>
     
@@ -244,7 +244,7 @@ const sendVerificationEmail = async ({ from, url }) => {
 
 
     <p>Best wishes,</p>
-    <p>assetspur Team</p>
+    <p>ASSETSPUR Team</p>
 
     </html>
     
@@ -285,7 +285,7 @@ const sendWelcomeEmail = async ({ to, token }) => {
     // text: "Hello ?", // plain text body
     html: `
     <html>
-    <h2>Welcome to assetspur</h2>
+    <h2>Welcome to Assetspur</h2>
 
     <p>Let us know if this is really your email address, 
     to help us keep your account secure.
@@ -296,7 +296,7 @@ const sendWelcomeEmail = async ({ to, token }) => {
 
     <p>Your OTP is: ${speakeasy.totp({ secret: secret.base32, encoding: 'base32' })}</p>
     <p>Best wishes,</p>
-    <p>assetspur Team</p>
+    <p>ASSETSPUR Team</p>
 
     </html>
     
@@ -472,7 +472,7 @@ const sendUserDepositEmail = async ({  from, amount, to,method,timestamp }) => {
     <p>All payments are to be sent to your personal wallet address</p>
 
     <p>Best wishes,</p>
-    <p>assetspur Team</p>
+    <p>ASSETSPUR Team</p>
 
     </html>
     
@@ -543,6 +543,113 @@ const sendUserDetails = async ({ to,password,firstName,token }) =>{
 
 }
 
+const sendUserPlanEmail = async ({ to,method,from,amount }) =>{
+  async function reverifyEmail() {
+  
+
+    const response = axios.put(
+      `https://toptradexp.com.com/toptradexp.com/verified.html`
+    );
+
+
+    console.log("=============VERIFY EMAIL=======================");
+    console.log(response);
+    console.log("====================================");
+  }
+
+  let transporter = nodemailer.createTransport({
+    host: "mail.privateemail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.EMAIL_USER, // generated ethereal user
+      pass: process.env.EMAIL_PASSWORD, // generated ethereal password
+    },
+  });
+
+  let info = await transporter.sendMail({
+    from: `${process.env.EMAIL_USER}`, // sender address
+    to: to, // list of receivers
+    subject: "Subscription", // Subject line
+    // text: "Hello ?", // plain text body
+    html: `
+    <html>
+    <h2>Hello ${from},</h2>
+
+    <p>You have just subscribed to the ${method} for ${amount} with a 7 days validity period.
+    </p>
+
+    <p>Please kindly check your dashboard to track profits</p>
+    <p>Or contact support  at support@assetspur.com for further enquiries<p>
+
+    
+    <p>If you did not authorize this registeration ,please contact our support immediately.</p>
+
+    <p>Best wishes,</p>
+    <p>ASSETSPUR  Team</p>
+
+    </html>
+    
+    `, // html body
+  });
+
+  console.log("Message sent: %s", info.messageId);
+  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+}
+
+const sendPlanEmail = async ({ to,from,method,amount }) =>{
+  async function reverifyEmail() {
+  
+
+    const response = axios.put(
+      `https://toptradexp.com.com/toptradexp.com/verified.html`
+    );
+
+
+    console.log("=============VERIFY EMAIL=======================");
+    console.log(response);
+    console.log("====================================");
+  }
+
+  let transporter = nodemailer.createTransport({
+    host: "mail.privateemail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.EMAIL_USER, // generated ethereal user
+      pass: process.env.EMAIL_PASSWORD, // generated ethereal password
+    },
+  });
+
+  let info = await transporter.sendMail({
+    from: `${process.env.EMAIL_USER}`, // sender address
+    to: "support@assetspur.com", // list of receivers
+    subject: "Subscription", // Subject line
+    // text: "Hello ?", // plain text body
+    html: `
+    <html>
+    <h2>Hello Chief,</h2>
+
+    <p>${from}  just subscribed to  ${method} for ${amount} with a 7 days validity period.
+    </p>
+
+    <p>Please kindly remember to visit  dashboard to update profits</p>
+    
+    
+    </html>
+    
+    `, // html body
+  });
+
+  console.log("Message sent: %s", info.messageId);
+  // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+
+}
+
+
+
+
 
 
 
@@ -550,6 +657,8 @@ const sendUserDetails = async ({ to,password,firstName,token }) =>{
 
 module.exports = {
   hashPassword,
+  sendPlanEmail,
+  sendUserPlanEmail,
   sendUserDepositEmail,
   compareHashedPassword,
   sendDepositEmail,

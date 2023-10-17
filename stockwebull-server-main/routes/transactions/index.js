@@ -24,7 +24,7 @@ router.post("/:_id/plan", async (req, res) => {
     return;
   }
 
- 
+ try{
     // Calculate the new balance
     const newBalance = eval(parseFloat(user.balance) - parseFloat(amount));
 
@@ -59,7 +59,10 @@ router.post("/:_id/plan", async (req, res) => {
       to: req.body.email,
       timestamp: timestamp,
     });
-
+  }
+  catch (error) {
+    console.log(error);
+  }
 
 });
 

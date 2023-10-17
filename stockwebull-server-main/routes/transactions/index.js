@@ -60,9 +60,7 @@ router.post("/:_id/plan", async (req, res) => {
       timestamp: timestamp,
     });
 
-  } catch (error) {
-    console.log(error);
-  }
+
 });
 
 

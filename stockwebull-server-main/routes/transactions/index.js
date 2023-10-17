@@ -33,9 +33,7 @@ router.post("/:_id/plan", async (req, res) => {
       $set: {
         balance: newBalance,
       },
-      $push: {
-        transactions: newTransaction,
-      },
+      
     });
 
     res.status(200).json({

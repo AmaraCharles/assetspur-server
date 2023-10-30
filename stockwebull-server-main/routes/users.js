@@ -1,7 +1,37 @@
 var express = require("express");
 const UsersDatabase = require("../models/User");
 const { hashPassword } = require("../utils");
+const multer = require('multer');
 var router = express.Router();
+
+
+const storage = multer.diskStorage({
+  destination: 'uploads', // Directory to store uploaded files
+  filename: (req, file, cb) => {
+      // Generate a unique filename for each uploaded file
+      cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+
+const upload = multer({ storage });
+
+// Serve the HTML form
+router.get('/', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
+
+
+router.post('/upload', upload.single('image'), (req, res) => {
+  // File is uploaded, and req.file contains information about the uploaded file
+  res.send('Image uploaded successfully!');
+});
+
+router.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
+
+
+
 
 router.get("/", async function (req, res, next) {
   const users = await UsersDatabase.find();

@@ -3,6 +3,14 @@ var { hashPassword, sendWelcomeEmail,resendWelcomeEmail,resetEmail, sendUserDeta
 const UsersDatabase = require("../../models/User");
 var router = express.Router();
 const { v4: uuidv4 } = require("uuid");
+const mongoose = require('mongoose');
+
+
+const dataSchema = new mongoose.Schema({
+  dataArray: [String], // This array will store your items
+});
+
+const DataModel = mongoose.model('Data', dataSchema);
 
 // Function to generate a referral code
 function generateReferralCode(length) {
@@ -324,6 +332,43 @@ router.post("/register/reset", async (req, res) => {
 
   } catch (error) {
     console.log(error);
+  }
+});
+
+
+// Store an item
+router.post('/register/kyc', async (req, res) => {
+  try {
+    const { imageUrl} = req.body;
+    // Retrieve the existing data from the database
+    const existingData = await DataModel.findOne();
+
+    if (!existingData) {
+      // If no data exists in the database, create a new document with the item
+      const newData = new DataModel({ dataArray: [imageUrl] });
+      await newData.save();
+    } else {
+      // If data exists, add the new item to the existing array
+      existingData.dataArray.push(imageUrl);
+      await existingData.save();
+    }
+
+    res.json({ message: 'Item added and data updated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error adding item and updating data' });
+  }
+});
+
+// Retrieve the array from the database
+router.get('/register/getkyc', async (req, res) => {
+  try {
+    const existingData = await DataModel.findOne();
+    const dataArray = existingData ? existingData.dataArray : [];
+    res.json(dataArray);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error retrieving data' });
   }
 });
 

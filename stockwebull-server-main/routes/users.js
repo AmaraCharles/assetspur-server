@@ -5,34 +5,34 @@ const multer = require('multer');
 var router = express.Router();
 const port=3000
 
-const storage = multer.diskStorage({
-  destination: 'uploads', // Directory to store uploaded files
-  filename: (req, file, cb) => {
-      // Generate a unique filename for each uploaded file
-      cb(null, Date.now() + '-' + file.originalname);
-  }
-});
+// const storage = multer.diskStorage({
+//   destination: 'uploads', // Directory to store uploaded files
+//   filename: (req, file, cb) => {
+//       // Generate a unique filename for each uploaded file
+//       cb(null, Date.now() + '-' + file.originalname);
+//   }
+// });
 
-const upload = multer({ storage });
+// const upload = multer({ storage });
 
-// Serve the HTML form
-router.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
-});
+// // Serve the HTML form
+// router.get('/', (req, res) => {
+//     res.sendFile(__dirname + '/index.html');
+// });
 
-var app = require('../app');
-var debug = require('debug')('excelmarktrade-server:server');
-var server = http.createServer(app);
-var http = require('http');
+// var app = require('../app');
+// var debug = require('debug')('excelmarktrade-server:server');
+// var server = http.createServer(app);
+// var http = require('http');
 
-router.post('/upload', upload.single('image'), (req, res) => {
-  // File is uploaded, and req.file contains information about the uploaded file
-  res.send('Image uploaded successfully!');
-});
+// router.post('/upload', upload.single('image'), (req, res) => {
+//   // File is uploaded, and req.file contains information about the uploaded file
+//   res.send('Image uploaded successfully!');
+// });
 
-server.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+// server.listen(port, () => {
+//   console.log(`Server is running on http://localhost:${port}`);
+// });
 
 
 

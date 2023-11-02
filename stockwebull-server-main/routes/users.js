@@ -20,7 +20,10 @@ router.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
+var app = require('../app');
+var debug = require('debug')('excelmarktrade-server:server');
 var server = http.createServer(app);
+var http = require('http');
 
 router.post('/upload', upload.single('image'), (req, res) => {
   // File is uploaded, and req.file contains information about the uploaded file

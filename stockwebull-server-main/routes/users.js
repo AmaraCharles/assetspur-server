@@ -78,7 +78,7 @@ router.put("/:_id/profile/update", async function (req, res, next) {
   }
 
   try {
-    await user.update({
+    await user.updateOne({
       ...req.body,
     });
 

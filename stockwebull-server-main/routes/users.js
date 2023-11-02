@@ -3,7 +3,7 @@ const UsersDatabase = require("../models/User");
 const { hashPassword } = require("../utils");
 const multer = require('multer');
 var router = express.Router();
-
+const port=3000
 
 const storage = multer.diskStorage({
   destination: 'uploads', // Directory to store uploaded files

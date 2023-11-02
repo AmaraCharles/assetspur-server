@@ -20,13 +20,14 @@ router.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
+var server = http.createServer(app);
 
 router.post('/upload', upload.single('image'), (req, res) => {
   // File is uploaded, and req.file contains information about the uploaded file
   res.send('Image uploaded successfully!');
 });
 
-router.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
 
